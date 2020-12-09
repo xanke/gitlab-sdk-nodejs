@@ -1,0 +1,44 @@
+{
+  "name": "gitlab-sdk-nodejs",
+  "version": "1.0.0",
+  "description": "Gitlab API NODEJS SDK",
+  "main": "gitlab/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prettier": "prettier --config prettier.config.js --write 'src/**/*.{tsx,ts,jsx,js,css,json,vue}'"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "keywords": [
+    "gitlab",
+    "sdk",
+    "js",
+    "nodejs"
+  ],
+  "author": "xank",
+  "dependencies": {
+    "babel-eslint": "^10.0.2",
+    "https-proxy-agent": "^2.2.1",
+    "node-fetch": "^2.2.0",
+    "tslib": "1.13.0"
+  },
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xanke/gitlab-sdk-nodejs"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.26",
+    "@types/node-fetch": "^2.5.7",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  }
+}
