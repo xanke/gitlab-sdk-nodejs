@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_fetch_1 = require("node-fetch");
+// import fetch from "node-fetch";
+const axios_1 = require("axios");
 class Client {
     constructor(options) {
         this.serverUrl = options.serverUrl;
@@ -11,13 +12,15 @@ class Client {
         };
     }
     async request(action, req, options = {}) {
+        const method = options.method || 'GET';
         options = {
             headers: this.headers,
-            method: options.method || 'GET',
-            body: JSON.stringify(req),
+            method,
+            data: req,
+            params: method === 'GET' ? req : null
         };
-        const response = await node_fetch_1.default(`${this.serverUrl}/api/v4/${action}`, options);
-        return await response.json();
+        let response = await axios_1.default(`${this.serverUrl}/api/v4/${action}`, options);
+        return response.data;
     }
     fetchProject() {
         return this.request(`/projects/${this.productId}`);
@@ -48,13 +51,52 @@ class Client {
             method: 'delete'
         });
     }
-    deleteBranch(id) {
-        return this.request(`/projects/${this.productId}/repository/branches/${id}`, null, {
+    createBranch(req) {
+        return this.request(`/projects/${this.productId}/repository/branches`, req, {
+            method: 'post'
+        });
+    }
+    fetchBranches() {
+        return this.request(`/projects/${this.productId}/repository/branches`);
+    }
+    fetchBranch(branch) {
+        return this.request(`/projects/${this.productId}/repository/branches/${branch}`);
+    }
+    deleteBranch(branch) {
+        return this.request(`/projects/${this.productId}/repository/branches/${branch}`, null, {
             method: 'delete'
         });
     }
-    deleteTag(id) {
-        return this.request(`/projects/${this.productId}/protected_tags/${id}`, null, {
+    deleteMergedBranches() {
+        return this.request(`/projects/${this.productId}/repository/merged_branches`, null, {
+            method: 'delete'
+        });
+    }
+    fetchPipelines(req) {
+        return this.request(`/projects/${this.productId}/pipelines`, req);
+    }
+    fetchPipeline(pipeline_id) {
+        return this.request(`/projects/${this.productId}/pipelines/${pipeline_id}`);
+    }
+    fetchPipelineJobs(pipeline_id) {
+        return this.request(`/projects/${this.productId}/pipelines/${pipeline_id}/jobs`);
+    }
+    fetchProjectJobs() {
+        return this.request(`/projects/${this.productId}/jobs`);
+    }
+    fetchTags() {
+        return this.request(`/projects/${this.productId}/repository/tags`);
+    }
+    fetchTag(tag_name) {
+        return this.request(`/projects/${this.productId}/repository/tags/${tag_name}`);
+    }
+    createTag(req) {
+        return this.request(`/projects/${this.productId}/repository/tags`, req, {
+            method: 'post'
+        });
+    }
+    deleteTag(tag_name) {
+        return this.request(`/projects/${this.productId}/repository/tags/${tag_name}`, null, {
             method: 'delete'
         });
     }

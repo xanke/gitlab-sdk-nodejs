@@ -1,14 +1,14 @@
-const Gitlab = require('../gitlab')
+const Client = require('./common/client')
 
-const Client = new Gitlab({
-  serverUrl: 'https://gitlab.com',
-  productId: 'frontend%2Fhome',
-  token: ''
-})
-
-async function main() {
+async function fetchProject() {
   const response = await Client.fetchProject()
-  console.log(response);
+  console.log(response)
 }
 
-main()
+async function fetchProjectVariables() {
+  const response = await Client.fetchProjectVariables()
+  console.log(response)
+}
+
+fetchProject()
+fetchProjectVariables()
