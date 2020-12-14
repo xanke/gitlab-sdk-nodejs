@@ -100,5 +100,11 @@ class Client {
             method: 'delete'
         });
     }
+    fetchCommits(req) {
+        return this.request(`/projects/${this.productId}/repository/commits`, req);
+    }
+    fetchCommit(sha) {
+        return this.request(`/projects/${this.productId}/repository/commits/${sha}`);
+    }
 }
 module.exports = Client;
