@@ -1,5 +1,18 @@
-// import fetch from "node-fetch";
 import axios from "axios"
+
+const service = axios.create({
+  timeout: 15000
+})
+
+service.interceptors.response.use(
+  response => {
+    return response.data
+  },
+
+  error => {
+    return error.response.data
+  }
+)
 
 class Client {
   serverUrl: string
@@ -23,8 +36,10 @@ class Client {
       data: req,
       params: method === 'GET' ? req : null
     }
-    let response = await axios(`${this.serverUrl}/api/v4/${action}`, options)
-    return response.data
+    return service({
+      url: `${this.serverUrl}/api/v4/${action}`,
+      ...options
+    })
   }
 
   fetchProject() {
@@ -41,31 +56,31 @@ class Client {
 
   createMergeRequests(req: any) {
     return this.request(`/projects/${this.productId}/merge_requests`, req, {
-      method: 'post'
+      method: 'POST'
     })
   }
 
   mergeMergeRequests(merge_request_iid: string) {
     return this.request(`/projects/${this.productId}/merge_requests/${merge_request_iid}/merge`, null, {
-      method: 'put'
+      method: 'PUT'
     })
   }
 
   updateMergeRequests(merge_request_iid: string, req: any) {
     return this.request(`/projects/${this.productId}/merge_requests/${merge_request_iid}`, req, {
-      method: 'put'
+      method: 'PUT'
     })
   }
 
   deleteMergeRequests(merge_request_iid: string) {
     return this.request(`/projects/${this.productId}/merge_requests/${merge_request_iid}`, null, {
-      method: 'delete'
+      method: 'DELETE'
     })
   }
 
   createBranch(req: any) {
     return this.request(`/projects/${this.productId}/repository/branches`, req, {
-      method: 'post'
+      method: 'POST'
     })
   }
   
@@ -79,13 +94,13 @@ class Client {
 
   deleteBranch(branch: string) {
     return this.request(`/projects/${this.productId}/repository/branches/${branch}`, null, {
-      method: 'delete'
+      method: 'DELETE'
     })
   }
 
   deleteMergedBranches() {
     return this.request(`/projects/${this.productId}/repository/merged_branches`, null, {
-      method: 'delete'
+      method: 'DELETE'
     })
   }
 
@@ -115,13 +130,13 @@ class Client {
 
   createTag(req: any) {
     return this.request(`/projects/${this.productId}/repository/tags`, req, {
-      method: 'post'
+      method: 'POST'
     })
   }
 
   deleteTag(tag_name: String) {
     return this.request(`/projects/${this.productId}/repository/tags/${tag_name}`, null, {
-      method: 'delete'
+      method: 'DELETE'
     })
   }
 
